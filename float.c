@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 10:36:08 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/11/28 03:28:26 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/11/28 11:02:45 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*ft_float_int(t_double *d, int exp)
 		return (ft_strdup("0"));
 	f = (t_float *)malloc(sizeof(t_float));
 	(f->res) = zero(1);
-	f->i = (exp > 0 && exp < 64) ? 62 - exp : -1;
+	f->i = (exp >= 0 && exp < 64) ? 62 - exp : -1;
 	f->j = 0;
 	while (++(f->i) < 64)
 	{
@@ -51,7 +51,7 @@ char	*ft_float_int(t_double *d, int exp)
 		{
 			f->buffer = ft_power(2, f->j);
 			f->tmp = (f->res);
-			(f->res) = addition(f->buffer, (f->res), 1);
+			(f->res) = addition(f->buffer, (f->res));
 			free(f->buffer);
 			free(f->tmp);
 		}
@@ -68,37 +68,37 @@ char	*ft_float_int(t_double *d, int exp)
 
 char	*ft_float_dec(t_double *d, int exp)
 {
-	t_float	*f;
+	char		*res;
+	t_float		*f;
 
+	if (exp > 63)
+		return (ft_strdup("0"));
 	f = (t_float *)malloc(sizeof(t_float));
-	f->res = zero(1);
 	f->i = (exp > 0 && exp < 63) ? 63 - exp : 64;
-	f->j = exp < 0 ? 63 : 1;
-	exp = exp < 0 ? -exp : exp;
+	f->j = (exp < 0) ? 0 : 1;
+	f->res = ft_strnew(0);
 	while (--(f->i) >= 0)
 	{
+		f->tmp = f->res;
+		f->res = ft_strjoin(f->res, "0");
+		free(f->tmp);
 		if ((d->float_rep.mantissa >> f->i) & 1)
 		{
 			f->buffer = ft_power(5, f->j);
-			f->tmp = f->buffer;
-			f->tmp1 = zero(f->j - ft_strlen(f->buffer));
-			f->buffer = ft_strjoin(f->tmp1, f->buffer);
-			free(f->tmp);
-			free(f->tmp1);
 			f->tmp = f->res;
-			f->res = addition(f->buffer, (f->res), -1);
+			f->res = addition(f->buffer, f->res);
 			free(f->buffer);
 			free(f->tmp);
 		}
 		f->j++;
 	}
-	(exp > 63 || exp < 0) && (f->buffer = ft_power(5, exp - 63));
+	(exp < 0) && (f->buffer = ft_power(5, -exp));
 	(exp > 0 && exp < 63) && (f->buffer = ft_strdup("1"));
-	f->tmp = (f->res);
-	(f->res) = multiplication(f->buffer, (f->res));
+	res = multiplication(f->buffer, f->res);
 	free(f->buffer);
-	free(f->tmp);
-	return (f->res);
+	free(f->res);
+	free(f);
+	return (res);
 }
 
 char	*ft_float_main(t_double *d)
@@ -108,12 +108,11 @@ char	*ft_float_main(t_double *d)
 	int		exp;
 
 	exp = EXP;
-	printf("%d\n", exp);
 	buff_dec = NULL;
 	buff_int = NULL;
 	buff_dec = ft_float_dec(d, exp);
 	buff_int = ft_float_int(d, exp);
-	printf("\n%s.%s\n", buff_int, buff_dec);
+	printf("%s.%s\n", buff_int, buff_dec);
 	return (NULL);
 }
 

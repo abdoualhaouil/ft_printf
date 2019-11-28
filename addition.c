@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 15:48:47 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/11/27 07:34:16 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/11/28 10:41:17 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,25 +27,6 @@ char	*add_zero(char *n1, char *n2)
 	tmp = str;
 	(i < j) && (str = ft_strjoin(str, n1));
 	(i >= j) && (str = ft_strjoin(str, n2));
-	free(tmp);
-	return (str);
-}
-
-char	*add_zero1(char *n1, char *n2)
-{
-	char	*str;
-	char	*tmp;
-	int		i;
-	int		j;
-	int		r;
-
-	i = ft_strlen(n1);
-	j = ft_strlen(n2);
-	r = (i > j) ? i - j : j - i;
-	str = zero(r);
-	tmp = str;
-	(i < j) && (str = ft_strjoin(n1, str));
-	(i >= j) && (str = ft_strjoin(n2, str));
 	free(tmp);
 	return (str);
 }
@@ -75,7 +56,7 @@ char	*tmp_addition(int i, char *n1, char *n2)
 	return (res);
 }
 
-char	*addition(char *n1, char *n2, int option)
+char	*addition(char *n1, char *n2)
 {
 	char	*res;
 	char	*tmp;
@@ -85,20 +66,13 @@ char	*addition(char *n1, char *n2, int option)
 	tmp = NULL;
 	i = ft_strlen(n1);
 	j = ft_strlen(n2);
-	if (option == 1)
-	{
-		(i < j) && (n1 = add_zero(n1, n2));
-		(i > j) && (n2 = add_zero(n1, n2));
-	}
-	else
-	{
-		(i < j) && (n1 = add_zero1(n1, n2));
-		(i > j) && (n2 = add_zero1(n1, n2));
-	}
+	(i < j) && (n1 = add_zero(n1, n2));
+	(i > j) && (n2 = add_zero(n1, n2));
 	(i > j) ? tmp = n2 : 0;
 	(i < j) ? tmp = n1 : 0;
 	i = (i > j) ? i : j;
 	res = tmp_addition(i, n1, n2);
 	(tmp) ? free(tmp) : 0;
+	res = delete_zero(res);
 	return (res);
 }
