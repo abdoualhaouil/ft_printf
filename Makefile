@@ -2,23 +2,17 @@ NAME= libftprintf.a
 
 ##NAMEL= libftprintf.a
 
-SRC= csp.c\
-      dioux_decimal.c\
-	  dioux_octal.c\
-	  ft_printf.c\
-	  llitoa.c\
-	  options.c\
-	  ullitoa.c\
-	  dioux_hexa.c\
-	  float.c\
-	  float_power.c\
-	  multiplication.c\
-	  addition.c\
-	  addition_exponent.c\
-	  main_float.c\
-
-
-
+SRC= active_flags.c\
+	 conv_cs.c\
+	 conv_dec.c\
+	 conv_hexa.c\
+	 ft_printf.c\
+	 llitoa.c\
+	 ullitoa.c\
+	 conv_octal.c\
+	 float.c\
+	 power.c\
+	 addition.c
 
 OBJ= $(SRC:.c=.o)
 LIBSRC= libft/ft_atoi.c  	libft/ft_bzero.c			libft/ft_isalnum.c	\
@@ -34,7 +28,7 @@ LIBSRC= libft/ft_atoi.c  	libft/ft_bzero.c			libft/ft_isalnum.c	\
 		  libft/ft_strmap.c	libft/ft_strmapi.c	libft/ft_strncat.c	libft/ft_strncmp.c 	\
 		  libft/ft_strncpy.c	libft/ft_strnequ.c	libft/ft_strnew.c		libft/ft_strnstr.c 	\
 		  libft/ft_strrchr.c		libft/ft_strsplit.c	libft/ft_strstr.c 	\
-		  libft/ft_strsub.c	libft/ft_strtrim.c	libft/ft_tolower.c	libft/ft_toupper.c 	\
+		  libft/ft_strsub.c	libft/ft_strtrim.c	libft/ft_tolower.c	libft/ft_toupper.c	\
 
 LIBOBJ= $(LIBSRC:.c=.o)
 

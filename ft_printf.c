@@ -5,65 +5,55 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/05 13:05:31 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/11/22 00:52:40 by aalhaoui         ###   ########.fr       */
+/*   Created: 2019/11/24 00:46:15 by aalhaoui          #+#    #+#             */
+/*   Updated: 2019/11/24 10:19:28 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*find_function(t_flags *active, va_list ap, char  conversion, int *count)
+int		find_function(t_flags *active, va_list ap, char conversion)
 {
-	char *res;
+	int		count;
 
-	res = ft_strnew(0);
-	(conversion == 'c') && (res = conversion_char(va_arg(ap, int), active, count));
-	(conversion == '%') && (res = conversion_per(active));
-	if (conversion == 's')
-	{
-		if (!(res = va_arg(ap, char *)))
-			res = ft_strdup("(null)");
-		res = conversion_string(res, active);
-	}
-	(conversion == 'p') && (res = conversion_hexa(ap, active, '0'));
+	count = 0;
+	(conversion == 'c') && (count = conv_char(va_arg(ap, int), active, count));
+	(conversion == 's') && (count += conv_string(ap, active, count));
+	(conversion == '%') && (count = conv_char('%', active, count));
+	(conversion == 'u') && (count += conv_unsigned_dec(ap, active, count));
+	(conversion == 'x') && (count += conv_hexa(ap, active, 'x', count));
+	(conversion == 'X') && (count += conv_hexa(ap, active, 'X', count));
+	(conversion == 'p') && (count += conv_hexa(ap, active, '0', count));
+	(conversion == 'o') && (count += conv_octal(ap, active, count));
 	if (conversion == 'd' || conversion == 'i')
-		res = conversion_dec(ap, active);
-	(conversion == 'u') && (res = conversion_unsigned_dec(ap, active));
-	(conversion == 'o') && (res = conversion_octal(ap, active));
-	(conversion == 'x') && (res = conversion_hexa(ap, active, 'x'));
-	(conversion == 'X') && (res = conversion_hexa(ap, active, 'X'));
-	(conversion == 'f') && (res = conversion_float(ap, active));
-	return (res);
+		count = conv_dec(ap, active, count);
+	return (count);
 }
 
 int		ft_printf(const char *format, ...)
 {
 	va_list		ap;
-	int			i;
-	char		*str;
 	t_flags		*active;
-	char		*res;
-	int		*count;
+	int			counter;
+	int			i;
 
-	count = (int *)malloc(sizeof(int));
-	(*count) = 0;
-	res = ft_strnew(0);
-	str	= (char *)format;
-	i = -1;
+	counter = 0;
 	va_start(ap, format);
-	while (str[++i])
-	{
-		if (str[i] == '%')
+	i = -1;
+	while (format[++i])
+		if (format[i] == '%')
 		{
-			active = check_active_flags(str, i);
-			while (str[++i] != 'c' && str[i] != 's' && str[i] != 'p' && str[i] != 'd' && str[i] != 'X' \
-				&& str[i] != 'i' && str[i] != 'o' && str[i] != 'u' && str[i] != 'x' && str[i] != 'f' && str[i] != '\0' && str[i] != '%');
-			res = find_function(active, ap, str[i], count);
-			(res) && ((*count) += write(1, res, ft_strlen(res)));
+			active = check_active_flags(format, i);
+			while (format[++i] != 'c' && format[i] != 's' && format[i] != 'p'
+				&& format[i] != 'd' && format[i] != 'X' && format[i] != 'i'
+				&& format[i] != 'o' && format[i] != 'u' && format[i] != 'x'
+				&& format[i] != 'f' && format[i] != '\0' && format[i] != '%')
+				;
+			counter += find_function(active, ap, format[i]);
+			free(active);
 		}
 		else
-			(*count) += write(1, &str[i], 1);
-		
-	}
-	return (*count);
+			counter += write(1, &format[i], 1);
+	va_end(ap);
+	return (counter);
 }

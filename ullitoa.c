@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:21:07 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/11/17 12:04:16 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/11/24 08:46:08 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,10 @@ static	int		ft_nbr(unsigned long long int n)
 
 char			*ft_itoallu(unsigned long long int n)
 {
-	char			*p;
-	int				i;
+	char							*p;
+	int								i;
 	unsigned long long int			d;
-	int				c;
-
+	int								c;
 
 	d = 1;
 	i = 0;

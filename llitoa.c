@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 19:21:07 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/11/17 11:59:13 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/11/24 08:46:33 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ static	void	f(long long int *c, long long int *d)
 
 char			*ft_itoall(long long int n)
 {
-	size_t	nb;
+	size_t			nb;
 	char			*p;
 	int				i;
-	long long int				d;
-	long long int				c;
+	long long int	d;
+	long long int	c;
 
 	(n < 0) ? (nb = -n) :\
 					(nb = n);
