@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 10:36:08 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/11/28 11:02:45 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/11/29 04:28:10 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 	return (buffer);
 }*/
 
-char	*ft_float_int(t_double *d, int exp)
+char	*ft_float_whole(t_double *d, int exp)
 {
 	t_float	*f;
 
@@ -66,7 +66,7 @@ char	*ft_float_int(t_double *d, int exp)
 	return (f->res);
 }
 
-char	*ft_float_dec(t_double *d, int exp)
+char	*ft_float_frac(t_double *d, int exp)
 {
 	char		*res;
 	t_float		*f;
@@ -95,8 +95,8 @@ char	*ft_float_dec(t_double *d, int exp)
 	(exp < 0) && (f->buffer = ft_power(5, -exp));
 	(exp > 0 && exp < 63) && (f->buffer = ft_strdup("1"));
 	res = multiplication(f->buffer, f->res);
-	free(f->buffer);
 	free(f->res);
+	free(f->buffer);
 	free(f);
 	return (res);
 }
@@ -108,11 +108,12 @@ char	*ft_float_main(t_double *d)
 	int		exp;
 
 	exp = EXP;
+	printf("%d\n", exp);
 	buff_dec = NULL;
 	buff_int = NULL;
-	buff_dec = ft_float_dec(d, exp);
-	buff_int = ft_float_int(d, exp);
-	printf("%s.%s\n", buff_int, buff_dec);
+	buff_dec = ft_float_frac(d, exp);
+	buff_int = ft_float_whole(d, exp);
+	printf("\n%s.%s\n", buff_int, buff_dec);
 	return (NULL);
 }
 

@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 03:07:03 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/11/28 11:02:36 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/11/28 11:40:05 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 
 int		main(void)
 {
-	long double d = 0.000000012;
+	long double d = 0.00002;
 
 	printf("%s\n", ft_float(d));
-	//printf("%.16382Lf\n", d);
+	printf("%.65Lf\n", d);
 	return (0);
 }
