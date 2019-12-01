@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 05:24:55 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/11/24 08:47:55 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/02 00:28:00 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ int		conv_dec(va_list ap, t_flags *active, int count)
 	int		minus;
 
 	minus = 0;
-	buffer = find_type_dec(ap, active);
+	if (!(buffer = find_type_dec(ap, active)))
+		return (-1);
 	(buffer[0] == '-') && (minus = 1);
 	tmp = buffer;
 	(buffer[0] == '-') && (buffer = buffer + 1);
@@ -96,7 +97,8 @@ int		conv_unsigned_dec(va_list ap, t_flags *active, int count)
 	int		len_buffer;
 	int		precision;
 
-	buffer = find_type_unsigned_dec(ap, active);
+	if (!(buffer = find_type_unsigned_dec(ap, active)))
+		return (-1);
 	(buffer[0] == '0' && active->precision >= 0) ? (buffer[0] = '\0') : 1;
 	len_buffer = ft_strlen(buffer);
 	(ZERO && (PRECISION >= 0 || MINUS)) && (active->flags -= 8);

@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 00:46:15 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/11/24 10:19:28 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/02 00:45:17 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ int		ft_printf(const char *format, ...)
 				&& format[i] != 'o' && format[i] != 'u' && format[i] != 'x'
 				&& format[i] != 'f' && format[i] != '\0' && format[i] != '%')
 				;
-			counter += find_function(active, ap, format[i]);
+			if ((counter += find_function(active, ap, format[i])) == -1)
+				return (-1);
 			free(active);
 		}
 		else

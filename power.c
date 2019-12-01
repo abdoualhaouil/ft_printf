@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 19:50:51 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/11/28 11:48:14 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/02 00:48:37 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ char	*zero(size_t n)
 	char		*res;
 	size_t		i;
 
-	res = ft_strnew(n);
+	if (!(res = ft_strnew(n)))
+		return (NULL);
 	i = -1;
 	while (++i < n)
 		res[i] = '0';
@@ -35,7 +36,8 @@ char	*delete_zero(char *res)
 	len_res = ft_strlen(res);
 	while (res[i] == '0' && (i != len_res - 1))
 		i++;
-	res = ft_strsub(res, i, len_res - i);
+	if (!(res = ft_strsub(res, i, len_res - i)))
+		return (NULL);
 	free(tmp);
 	return (res);
 }
@@ -50,7 +52,8 @@ char	*multiplication(char *mantissa, char *exponent)
 	int		i;
 
 	k = ft_strlen(mantissa) + ft_strlen(exponent);
-	res = zero(k + 1);
+	if (!(res = zero(k + 1)))
+		return (NULL);
 	j = ft_strlen(mantissa);
 	while (--j >= 0)
 	{
@@ -64,7 +67,7 @@ char	*multiplication(char *mantissa, char *exponent)
 			res[k] = ((res[k] - '0') + totaldidgit) % 10 + '0';
 			if (i == 0 && remainder > 0)
 				res[k - 1] = ((res[k - 1] - '0') + remainder) + '0';
-			(k)--;
+			k--;
 		}
 		k = j + ft_strlen(exponent);
 	}
@@ -79,24 +82,29 @@ char	*ft_power(int base, int exp)
 	char	*tmp;
 
 	basec = ft_itoa(base);
-	base1 = ft_strdup("1");
+	if (!(base1 = ft_strdup("1")))
+		return (NULL);
 	while (exp > 1)
 	{
 		if (exp % 2 == 1)
 		{
 			tmp = base1;
-			base1 = multiplication(base1, basec);
+			if (!(base1 = multiplication(base1, basec)))
+				return (NULL);
 			free(tmp);
 			exp--;
 		}
 		exp /= 2;
 		tmp = basec;
-		basec = multiplication(basec, basec);
+		if (!(basec = multiplication(basec, basec)))
+			return (NULL);
 		free(tmp);
 	}
 	tmp = basec;
 	(exp != 0) && (basec = multiplication(base1, basec));
 	(exp == 0) && (basec = ft_strdup(base1));
+	if (!basec)
+		return (NULL);
 	free(tmp);
 	free(base1);
 	return (basec);

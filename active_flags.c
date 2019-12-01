@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 02:34:07 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/11/24 19:13:15 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/01 23:49:03 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ t_flags	*check_active_flags(const char *str, int i)
 {
 	t_flags		*active;
 
-	active = (t_flags *)malloc(sizeof(t_flags));
+	if (!(active = (t_flags *)malloc(sizeof(t_flags))))
+		return (NULL);
 	active->flags = 0;
 	active->conversion = 0;
 	active->precision = -1;

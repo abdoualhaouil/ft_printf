@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 08:11:32 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/11/24 09:22:51 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/02 00:43:46 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ char	*dec_to_octal(size_t n)
 	i = 0;
 	while ((n /= 8) > 0)
 		i++;
-	str = ft_strnew(i + 2);
+	if (!(str = ft_strnew(i + 2)))
+		return (NULL);
 	str[i + 1] = '\0';
 	while (nb > 0)
 	{
@@ -70,11 +71,13 @@ int		conv_octal(va_list ap, t_flags *active, int count)
 	int		len_buffer;
 	int		precision;
 
-	buffer = find_type_octal(ap, active);
+	if (!(buffer = find_type_octal(ap, active)))
+		return (-1);
 	if (ft_strequ(buffer, ""))
 	{
 		free(buffer);
-		(buffer = ft_strdup("0"));
+		if (!(buffer = ft_strdup("0")))
+			return (-1);
 	}
 	(buffer[0] == '0' && active->precision == 0) ? (buffer[0] = '\0') : 1;
 	(ft_strequ(buffer, "0")) && (HASH) && (active->flags -= 2);

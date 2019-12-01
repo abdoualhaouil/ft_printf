@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 06:29:09 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/11/24 08:43:58 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/02 00:40:25 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ char	*dec_to_hex(size_t n, char c)
 	nb = n;
 	while ((n /= 16) > 0)
 		i++;
-	res = ft_strnew(i + 2);
+	if (!(res = ft_strnew(i + 2)))
+		return (NULL);
 	res[i + 1] = '\0';
 	while (nb > 0)
 	{
@@ -72,25 +73,28 @@ void	tmp_hexa(t_flags *active, int len_buffer, int *precision)
 int		conv_hexa(va_list ap, t_flags *active, char c, int count)
 {
 	char	*buffer;
-	int		len_buffer;
+	int		len_buff;
 	int		precision;
 
 	(c == '0') && (active->flags |= 2U);
-	(c != '0') && (buffer = find_type_hexa(ap, active, c));
-	(c == '0') && (buffer = dec_to_hex(va_arg(ap, size_t), 'x'));
+	if ((c != '0') && !(buffer = find_type_hexa(ap, active, c)))
+		return (-1);
+	if ((c == '0') && !(buffer = dec_to_hex(va_arg(ap, size_t), 'x')))
+		return (-1);
 	(ft_strequ(buffer, "")) && (buffer = ft_strdup("0")) && (c != '0') &&
 		(HASH) && (active->flags -= 2);
+	if (!buffer)
+		return (-1);
 	(buffer[0] == '0' && active->precision >= 0) ? (buffer[0] = '\0') : 1;
-	len_buffer = ft_strlen(buffer);
-	tmp_hexa(active, len_buffer, &precision);
+	len_buff = ft_strlen(buffer);
+	tmp_hexa(active, len_buff, &precision);
 	(WIDTH > 0 && !(ZERO) && !(MINUS)) && (count += ft_write(' ', WIDTH));
 	(HASH && c == '0') && (count += write(1, "0x", 2));
 	(HASH && c == 'x') && (count += write(1, "0x", 2));
 	(HASH && c == 'X') && (count += write(1, "0X", 2));
 	(WIDTH > 0 && ZERO) && (count += ft_write('0', WIDTH));
-	(PRECISION > len_buffer) && (count += ft_write('0',
-		PRECISION - len_buffer));
-	count += write(1, buffer, len_buffer);
+	(PRECISION > len_buff) && (count += ft_write('0', PRECISION - len_buff));
+	count += write(1, buffer, len_buff);
 	(WIDTH > 0 && !(ZERO) && MINUS) && (count += ft_write(' ', WIDTH));
 	free(buffer);
 	return (count);

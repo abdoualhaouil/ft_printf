@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 04:15:49 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/11/24 10:18:04 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/02 00:16:21 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,13 @@ int		conv_string(va_list ap, t_flags *active, int count)
 	if (active->precision > 0 && active->precision < len_str)
 	{
 		tmp = buffer;
-		buffer = ft_strsub(buffer, 0, active->precision);
+		if (!(buffer = ft_strsub(buffer, 0, active->precision)))
+			return (-1);
 		free(tmp);
 	}
 	else if (PRECISION == 0)
-		buffer = ft_strdup("");
+		if (!(buffer = ft_strdup("")))
+			return (-1);
 	count += tmp_string(active, buffer, count);
 	free(buffer);
 	return (count);

@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 15:48:47 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/11/29 04:27:01 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/02 00:02:16 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,10 @@ char	*add_zero(char *n1, char *n2)
 	r = (i > j) ? i - j : j - i;
 	str = zero(r);
 	tmp = str;
-	(i < j) && (str = ft_strjoin(str, n1));
-	(i >= j) && (str = ft_strjoin(str, n2));
+	if ((i < j) && !(str = ft_strjoin(str, n1)))
+		return (NULL);
+	if ((i >= j) && !(str = ft_strjoin(str, n2)))
+		return (NULL);
 	free(tmp);
 	return (str);
 }
@@ -38,7 +40,8 @@ char	*tmp_addition(int i, char *n1, char *n2)
 	int		remainder;
 	int		colum;
 
-	res = ft_strnew(i);
+	if (!(res = ft_strnew(i)))
+		return (NULL);
 	remainder = 0;
 	while (--i >= 0)
 	{
@@ -50,7 +53,8 @@ char	*tmp_addition(int i, char *n1, char *n2)
 	if (remainder == 1)
 	{
 		tmp1 = res;
-		res = ft_strjoin("1", res);
+		if (!(res = ft_strjoin("1", res)))
+			return (NULL);
 		free(tmp1);
 	}
 	return (res);
@@ -66,13 +70,17 @@ char	*addition(char *n1, char *n2)
 	tmp = NULL;
 	i = ft_strlen(n1);
 	j = ft_strlen(n2);
-	(i < j) && (n1 = add_zero(n1, n2));
-	(i > j) && (n2 = add_zero(n1, n2));
+	if ((i < j) && !(n1 = add_zero(n1, n2)))
+		return (NULL);
+	if ((i > j) && !(n2 = add_zero(n1, n2)))
+		return (NULL);
 	(i > j) ? tmp = n2 : 0;
 	(i < j) ? tmp = n1 : 0;
 	i = (i > j) ? i : j;
-	res = tmp_addition(i, n1, n2);
+	if (!(res = tmp_addition(i, n1, n2)))
+		return (NULL);
 	(tmp) ? free(tmp) : 0;
-	res = delete_zero(res);
+	if (!(res = delete_zero(res)))
+		return (NULL);
 	return (res);
 }

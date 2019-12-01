@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 00:44:39 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/11/28 09:36:46 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/01 19:33:52 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,14 @@ typedef	struct		s_float
 	char	*buffer;
 	char	*res;
 	char	*tmp;
+	int		nbr_zero;
 	int		i;
 	int		j;
 }					t_float;
 
 t_flags				*check_active_flags(const char *str, int i);
 char				*nan_and_infinity(unsigned long int mantissa,
-						unsigned long int exponent);
+						unsigned long int sign);
 int					ft_printf(const char *format, ...);
 int					conv_char(int c, t_flags *active, int count);
 int					conv_dec(va_list ap, t_flags *active, int count);
@@ -75,7 +76,7 @@ int					conv_octal(va_list ap, t_flags *active, int count);
 int					conv_string(va_list ap, t_flags *active, int count);
 char				*ft_power(int base, int exp);
 char				*ft_float(long double number);
-char				*addition(char *n1, char *n2S);
+char				*addition(char *n1, char *n2);
 char				*zero(size_t n);
 char				*ft_float_main(t_double *d);
 char				*ft_float_calcul(t_double *d, int exp, int base);
