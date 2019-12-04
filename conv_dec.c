@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 05:24:55 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/12/02 00:28:00 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/02 01:15:12 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*find_type_dec(va_list ap, t_flags *active)
 {
-	char *buffer;
+	char	*buffer;
 
 	if (active->conversion >> 2 & 1)
 		buffer = ft_itoall((char)va_arg(ap, int));
@@ -31,7 +31,7 @@ char	*find_type_dec(va_list ap, t_flags *active)
 
 char	*find_type_unsigned_dec(va_list ap, t_flags *active)
 {
-	char *buffer;
+	char	*buffer;
 
 	if (active->conversion >> 2 & 1)
 		buffer = ft_itoallu((unsigned char)va_arg(ap, int));
@@ -48,7 +48,7 @@ char	*find_type_unsigned_dec(va_list ap, t_flags *active)
 
 int		tmp_dec(t_flags *active, int len_buffer, int minus)
 {
-	int precision;
+	int		precision;
 
 	(ZERO && (PRECISION >= 0 || MINUS)) && (active->flags -= 8);
 	(PLUS || SPACE || minus) && (WIDTH--);

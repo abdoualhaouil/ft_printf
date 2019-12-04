@@ -6,13 +6,13 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 10:36:08 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/12/01 23:43:01 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/04 16:59:44 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	*ft_free(t_double *ptr)
+void	*ft_free(void *ptr)
 {
 	free(ptr);
 	return (NULL);
@@ -53,7 +53,7 @@ char	*tmp_whole(t_double *d, t_float *f)
 		if (!(f->buffer = ft_power(2, f->j)))
 			return (NULL);
 		f->tmp = (f->res);
-		if (!(f->res = addition(f->buffer, f->res)))
+		if (!(f->res = addition(f->buffer, f->res, 0)))
 			return (NULL);
 		free(f->buffer);
 		free(f->tmp);
@@ -95,7 +95,7 @@ char	*tmp_frac(t_float *f, t_double *d)
 		if (!(f->buffer = ft_power(5, f->j)))
 			return (NULL);
 		f->tmp = f->res;
-		if (!(f->res = addition(f->buffer, f->res)))
+		if (!(f->res = addition(f->buffer, f->res, 0)))
 			return (NULL);
 		free(f->buffer);
 		free(f->tmp);
@@ -153,43 +153,36 @@ char	*ft_float_frac(t_double *d, int exp, t_float *f)
 	if (!(f->res = ft_strjoin(f->tmp, res)))
 		return (NULL);
 	f->i = ft_strlen(f->res) - 1;
-	while (f->res[f->i] == '0')
+	while (f->res[f->i] == '0' && f->i > 0)
 		f->res[f->i--] = '\0';
 	free(f->tmp);
 	free(res);
 	return (f->res);
 }
 
-char	*ft_float_main(t_double *d)
+char	*ft_float_main(t_double *d, t_flags *active)
 {
-	char	*buff_int;
-	char	*buff_dec;
+	char	*buff_whole;
+	char	*buff_frac;
 	char	*res;
 	int		exp;
 	t_float *f;
 
-	if (!(f = (t_float *)malloc(sizeof(t_float))))
-		return (NULL);
 	exp = EXP;
-	if (!(buff_dec = ft_float_frac(d, exp, f)))
+	if (!(f = (t_float *)malloc(sizeof(t_float))))
+		return (NULL);
+	if (!(buff_frac = ft_float_frac(d, exp, f)))
 		return (NULL);
 	free(f);
 	if (!(f = (t_float *)malloc(sizeof(t_float))))
 		return (NULL);
-	if (!(buff_int = ft_float_whole(d, exp, f)))
+	if (!(buff_whole = ft_float_whole(d, exp, f)))
 		return (NULL);
-	if (!(res = ft_strjoin(buff_int, ".")))
-		return (NULL);
-	free(buff_int);
-	if (!(buff_int = ft_strjoin(res, buff_dec)))
-		return (NULL);
-	free(res);
-	free(buff_dec);
-	free(f);
-	return (buff_int);
+	res = ft_roundup(buff_frac, buff_whole, active);
+	return (res);
 }
 
-char	*ft_float(long double number)
+char	*ft_float(long double number, t_flags *active)
 {
 	char		*mantissa;
 	char		*tmp;
@@ -198,22 +191,24 @@ char	*ft_float(long double number)
 	mantissa = NULL;
 	d = (t_double *)malloc(sizeof(t_double));
 	d->number = number;
-	if (d->float_rep.mantissa == 0 && (d->float_rep.mantissa >> 63) & 1)
-	{
-		if (d->float_rep.sign == 1)
-			return ((d->float_rep.sign == 1) ? "-0.0" : "0.0");
-	}
+	if (d->float_rep.mantissa == 0 && !((d->float_rep.mantissa >> 63) & 1))
+		return ((d->float_rep.sign == 1) ? "-0." : "0.");
 	else if (d->float_rep.exponent == 32767)
 	{
 		if (!(mantissa = nan_and_infinity(d->float_rep.mantissa,
 				d->float_rep.sign)))
 			return (ft_free(d));
+		return (mantissa);
 	}
-	else if (!(mantissa = ft_float_main(d)))
+	else if (!(mantissa = ft_float_main(d, active)))
 		return (ft_free(d));
-	tmp = mantissa;
-	(d->float_rep.sign == 1) && (mantissa = ft_strjoin("-", mantissa));
-	free(tmp);
+	if (d->float_rep.sign == 1)
+	{
+		tmp = mantissa;
+		if (!(mantissa = ft_strjoin("-", mantissa)))
+			return (ft_free(mantissa));
+		free(tmp);
+	}
 	free(d);
 	return (mantissa);
 }

@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 00:46:15 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/12/02 00:45:17 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/02 02:14:28 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,15 @@ int		find_function(t_flags *active, va_list ap, char conversion)
 
 	count = 0;
 	(conversion == 'c') && (count = conv_char(va_arg(ap, int), active, count));
-	(conversion == 's') && (count += conv_string(ap, active, count));
+	(conversion == 's') && (count += conv_string(va_arg(ap, char *),
+		active, count));
 	(conversion == '%') && (count = conv_char('%', active, count));
 	(conversion == 'u') && (count += conv_unsigned_dec(ap, active, count));
 	(conversion == 'x') && (count += conv_hexa(ap, active, 'x', count));
 	(conversion == 'X') && (count += conv_hexa(ap, active, 'X', count));
 	(conversion == 'p') && (count += conv_hexa(ap, active, '0', count));
 	(conversion == 'o') && (count += conv_octal(ap, active, count));
+	(conversion == 'f') && (count += conv_float(ap, active, count));
 	if (conversion == 'd' || conversion == 'i')
 		count = conv_dec(ap, active, count);
 	return (count);

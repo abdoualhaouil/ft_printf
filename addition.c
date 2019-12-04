@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 15:48:47 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/12/02 00:02:16 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/04 16:02:15 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	*tmp_addition(int i, char *n1, char *n2)
 	return (res);
 }
 
-char	*addition(char *n1, char *n2)
+char	*addition(char *n1, char *n2, int op)
 {
 	char	*res;
 	char	*tmp;
@@ -80,7 +80,8 @@ char	*addition(char *n1, char *n2)
 	if (!(res = tmp_addition(i, n1, n2)))
 		return (NULL);
 	(tmp) ? free(tmp) : 0;
-	if (!(res = delete_zero(res)))
-		return (NULL);
+	if (op == 0)
+		if (!(res = delete_zero(res)))
+			return (NULL);
 	return (res);
 }

@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 04:15:49 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/12/02 00:16:21 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/02 02:21:33 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,27 +58,27 @@ int		tmp_string(t_flags *active, char *buffer, int count)
 	return (count);
 }
 
-int		conv_string(va_list ap, t_flags *active, int count)
+int		conv_string(char *buffer, t_flags *active, int count)
 {
-	char	*buffer;
-	int		len_str;
+	char	*buffer1;
 	char	*tmp;
+	int		len_str;
 
-	buffer = ft_strdup(va_arg(ap, char *));
-	if (!(buffer))
-		buffer = ft_strdup("(null)");
-	len_str = ft_strlen(buffer);
+	buffer1 = ft_strdup(buffer);
+	if (!(buffer1))
+		buffer1 = ft_strdup("(null)");
+	len_str = ft_strlen(buffer1);
 	if (active->precision > 0 && active->precision < len_str)
 	{
-		tmp = buffer;
-		if (!(buffer = ft_strsub(buffer, 0, active->precision)))
+		tmp = buffer1;
+		if (!(buffer1 = ft_strsub(buffer1, 0, active->precision)))
 			return (-1);
 		free(tmp);
 	}
 	else if (PRECISION == 0)
-		if (!(buffer = ft_strdup("")))
+		if (!(buffer1 = ft_strdup("")))
 			return (-1);
-	count += tmp_string(active, buffer, count);
-	free(buffer);
+	count += tmp_string(active, buffer1, count);
+	free(buffer1);
 	return (count);
 }

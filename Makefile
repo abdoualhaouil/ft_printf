@@ -12,7 +12,9 @@ SRC= active_flags.c\
 	 conv_octal.c\
 	 float.c\
 	 power.c\
-	 addition.c
+	 addition.c\
+	 conv_float.c\
+	 round.c
 
 OBJ= $(SRC:.c=.o)
 LIBSRC= libft/ft_atoi.c  	libft/ft_bzero.c			libft/ft_isalnum.c	\
