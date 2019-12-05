@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 00:44:39 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/12/04 16:02:27 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/05 15:50:05 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef	union		s_double
 typedef	struct		s_float
 {
 	char	*buffer;
+	char	*buffer2;
 	char	*res;
 	char	*tmp;
 	int		nbr_zero;

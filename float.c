@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 10:36:08 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/12/04 16:59:44 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/05 16:14:30 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,27 +84,37 @@ char	*ft_float_whole(t_double *d, int exp, t_float *f)
 	return (f->res);
 }
 
-char	*tmp_frac(t_float *f, t_double *d)
+char	*tmp_frac(t_float *f, t_double *d, int exp)
 {
-	f->tmp = f->res;
-	if (!(f->res = ft_strjoin(f->res, "0")))
-		return (NULL);
-	free(f->tmp);
-	if ((d->float_rep.mantissa >> f->i) & 1)
+	size_t m;
+
+	f->i = (exp >= 0 && exp < 63) ? 63 - exp : 64;
+	f->j = (exp < 0) ? 0 : 1;
+	while (--(f->i) >= 0)
 	{
-		if (!(f->buffer = ft_power(5, f->j)))
-			return (NULL);
 		f->tmp = f->res;
-		if (!(f->res = addition(f->buffer, f->res, 0)))
+		if (!(f->res = ft_strjoin(f->res, "0")))
 			return (NULL);
-		free(f->buffer);
 		free(f->tmp);
+		if ((d->float_rep.mantissa >> f->i) & 1)
+		{
+			if (!(f->buffer = ft_power(5, f->j)))
+				return (NULL);
+			f->tmp = f->res;
+			m = ft_max(ft_strlen(f->buffer), ft_strlen(f->res));
+			if (!(f->res = addition(f->buffer, f->res, 0)))
+				return (NULL);
+			if (m < ft_strlen(f->res))
+				f->nbr_zero--;
+			free(f->buffer);
+			free(f->tmp);
+		}
+		f->j++;
 	}
-	f->j++;
 	return (f->res);
 }
 
-char	*find_nbr_zero(t_float *f, t_double *d, int exp)
+int		find_nbr_zero(t_float *f, t_double *d, int exp)
 {
 	f->j = 1;
 	f->i = 63 - exp;
@@ -112,50 +122,48 @@ char	*find_nbr_zero(t_float *f, t_double *d, int exp)
 		f->j++;
 	if (exp >= 0 && exp < 64)
 	{
-		if (!(f->buffer = ft_power(5, f->j)))
-			return (NULL);
-		if (!(f->tmp = zero(f->j - ft_strlen(f->buffer))))
-			return (NULL);
-		free(f->buffer);
-		if (!(f->buffer = ft_strdup("1")))
-			return (NULL);
+		if (!(f->buffer2 = ft_power(5, f->j)))
+			return (-1);
+		f->nbr_zero = f->j - ft_strlen(f->buffer2);
+		free(f->buffer2);
+		if (!(f->buffer2 = ft_strdup("1")))
+			return (-1);
 	}
 	else
 	{
-		if (!(f->buffer = ft_power(5, -exp)))
-			return (NULL);
-		f->nbr_zero = -exp - ft_strlen(f->buffer);
-		if (!(f->tmp = zero(f->nbr_zero)))
-			return (NULL);
+		if (!(f->buffer2 = ft_power(5, -exp)))
+			return (-1);
+		f->nbr_zero = -exp - ft_strlen(f->buffer2);
 	}
-	return (f->res);
+	return (0);
 }
 
 char	*ft_float_frac(t_double *d, int exp, t_float *f)
 {
 	char		*res;
+	size_t m;
 
 	if (exp > 63)
 		return (ft_strdup("0"));
-	f->i = (exp >= 0 && exp < 63) ? 63 - exp : 64;
-	f->j = (exp < 0) ? 0 : 1;
 	if (!(f->res = ft_strnew(0)))
 		return (NULL);
-	while (--(f->i) >= 0)
-		if (!(tmp_frac(f, d)))
-			return (NULL);
-	if (!(find_nbr_zero(f, d, exp)))
+	if (find_nbr_zero(f, d, exp) == -1)
 		return (NULL);
-	if (!(res = multiplication(f->buffer, f->res)))
+	if (!(tmp_frac(f, d, exp)))
 		return (NULL);
+	m = ft_max(ft_strlen(f->buffer2), ft_strlen(f->res));
+	if (!(res = multiplication(f->buffer2, f->res)))
+		return (NULL);
+	if (m < ft_strlen(res))
+		f->nbr_zero--;
 	free(f->res);
-	free(f->buffer);
+	if (!(f->tmp = zero(f->nbr_zero)))
+		return (NULL);
 	if (!(f->res = ft_strjoin(f->tmp, res)))
 		return (NULL);
 	f->i = ft_strlen(f->res) - 1;
 	while (f->res[f->i] == '0' && f->i > 0)
 		f->res[f->i--] = '\0';
-	free(f->tmp);
 	free(res);
 	return (f->res);
 }
