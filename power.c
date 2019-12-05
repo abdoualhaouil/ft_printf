@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 19:50:51 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/12/02 00:48:37 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/05 22:59:51 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*delete_zero(char *res)
 	return (res);
 }
 
-char	*multiplication(char *mantissa, char *exponent)
+char	*multiplication(char *mantissa, char *exponent, int op)
 {
 	char	*res;
 	int		j;
@@ -51,10 +51,12 @@ char	*multiplication(char *mantissa, char *exponent)
 	int		remainder;
 	int		i;
 
-	k = ft_strlen(mantissa) + ft_strlen(exponent);
-	if (!(res = zero(k + 1)))
+	k = (ft_strequ(mantissa, "1")) ? ft_strlen(mantissa) +
+		ft_strlen(exponent) - 1 : ft_strlen(mantissa) + ft_strlen(exponent);
+	if (!(res = zero(k)))
 		return (NULL);
 	j = ft_strlen(mantissa);
+	k--;
 	while (--j >= 0)
 	{
 		i = ft_strlen(exponent);
@@ -69,9 +71,9 @@ char	*multiplication(char *mantissa, char *exponent)
 				res[k - 1] = ((res[k - 1] - '0') + remainder) + '0';
 			k--;
 		}
-		k = j + ft_strlen(exponent);
+		k = j + ft_strlen(exponent) - 1;
 	}
-	res = delete_zero(res);
+	(op == 0) && (res = delete_zero(res));
 	return (res);
 }
 
@@ -89,19 +91,19 @@ char	*ft_power(int base, int exp)
 		if (exp % 2 == 1)
 		{
 			tmp = base1;
-			if (!(base1 = multiplication(base1, basec)))
+			if (!(base1 = multiplication(base1, basec, 0)))
 				return (NULL);
 			free(tmp);
 			exp--;
 		}
 		exp /= 2;
 		tmp = basec;
-		if (!(basec = multiplication(basec, basec)))
+		if (!(basec = multiplication(basec, basec, 0)))
 			return (NULL);
 		free(tmp);
 	}
 	tmp = basec;
-	(exp != 0) && (basec = multiplication(base1, basec));
+	(exp != 0) && (basec = multiplication(base1, basec, 0));
 	(exp == 0) && (basec = ft_strdup(base1));
 	if (!basec)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 00:44:39 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/12/05 15:50:05 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/05 20:35:00 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct		s_bitfields
 	unsigned long int sign : 1;
 }					t_bitfields;
 
-typedef	union		s_double
+typedef	union		u_double
 {
 	long double		number;
 	t_bitfields		float_rep;
@@ -56,7 +56,6 @@ typedef	struct		s_float
 	char	*buffer2;
 	char	*res;
 	char	*tmp;
-	int		nbr_zero;
 	int		i;
 	int		j;
 }					t_float;
@@ -80,7 +79,7 @@ char				*addition(char *n1, char *n2, int op);
 char				*zero(size_t n);
 char				*ft_float_main(t_double *d, t_flags *active);
 char				*ft_float_calcul(t_double *d, int exp, int base);
-char				*multiplication(char *mantissa, char *exponent);
+char				*multiplication(char *mantissa, char *exponent, int op);
 char				*add_zero(char *n1, char *n2);
 char				*delete_zero(char *res);
 int					conv_float(va_list ap, t_flags *active, int count);
