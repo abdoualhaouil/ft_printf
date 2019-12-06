@@ -14,7 +14,8 @@ SRC= active_flags.c\
 	 power.c\
 	 addition.c\
 	 conv_float.c\
-	 round.c
+	 round.c \
+	 tmp_float.c
 
 OBJ= $(SRC:.c=.o)
 LIBSRC= libft/ft_atoi.c  	libft/ft_bzero.c			libft/ft_isalnum.c	\

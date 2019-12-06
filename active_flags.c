@@ -6,13 +6,13 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 02:34:07 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/12/01 23:49:03 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/05 23:49:35 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int		active_precision(const char *str, t_flags **active, int i)
+static	int		active_precision(const char *str, t_flags **active, int i)
 {
 	i++;
 	if (!(str[i] >= '0' && str[i] <= '9'))
@@ -28,7 +28,7 @@ int		active_precision(const char *str, t_flags **active, int i)
 	return (i);
 }
 
-int		active_width(const char *str, t_flags **active, int i)
+int				active_width(const char *str, t_flags **active, int i)
 {
 	(*active)->width = ft_atoi(str + i);
 	while (str[i] >= '0' && str[i] <= '9')
@@ -38,16 +38,22 @@ int		active_width(const char *str, t_flags **active, int i)
 	return (i - 1);
 }
 
-t_flags	*check_active_flags(const char *str, int i)
+static	t_flags	*flags(t_flags *active)
+{
+	active->flags = 0;
+	active->conversion = 0;
+	active->precision = -1;
+	active->width = 0;
+	return (active);
+}
+
+t_flags			*check_active_flags(const char *str, int i)
 {
 	t_flags		*active;
 
 	if (!(active = (t_flags *)malloc(sizeof(t_flags))))
 		return (NULL);
-	active->flags = 0;
-	active->conversion = 0;
-	active->precision = -1;
-	active->width = 0;
+	active = flags(active);
 	while (str[i] != 'c' && str[i] != 's' && str[i] != 'p' && str[i] != 'd' && \
 		str[i] != 'X' && str[i] != 'i' && str[i] != 'o' && str[i] != 'u' && \
 		str[i] != 'x' && str[i] != 'f' && str[i++] != '\0')

@@ -6,13 +6,13 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 08:11:32 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/12/02 00:43:46 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/06 00:04:11 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*dec_to_octal(size_t n)
+static	char	*dec_to_octal(size_t n)
 {
 	char	*str;
 	size_t	nb;
@@ -36,7 +36,7 @@ char	*dec_to_octal(size_t n)
 	return (str);
 }
 
-char	*find_type_octal(va_list ap, t_flags *active)
+static	char	*find_type_octal(va_list ap, t_flags *active)
 {
 	char *buffer;
 
@@ -53,7 +53,7 @@ char	*find_type_octal(va_list ap, t_flags *active)
 	return (buffer);
 }
 
-void	tmp_octal(t_flags *active, int len_buffer, int *precision)
+static	void	tmp_octal(t_flags *active, int len_buffer, int *precision)
 {
 	(HASH && active->precision <= len_buffer) && (WIDTH--);
 	(ZERO && (PRECISION >= 0 || MINUS)) && (active->flags -= 8);
@@ -65,7 +65,7 @@ void	tmp_octal(t_flags *active, int len_buffer, int *precision)
 	(WIDTH > PRECISION && (*precision) <= 0) && (active->width -= len_buffer);
 }
 
-int		conv_octal(va_list ap, t_flags *active, int count)
+int				conv_octal(va_list ap, t_flags *active, int count)
 {
 	char	*buffer;
 	int		len_buffer;

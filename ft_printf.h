@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 00:44:39 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/12/05 20:35:00 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/06 00:34:55 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,6 @@ typedef	struct		s_float
 }					t_float;
 
 t_flags				*check_active_flags(const char *str, int i);
-char				*nan_and_infinity(unsigned long int mantissa,
-						unsigned long int sign);
 int					ft_printf(const char *format, ...);
 int					conv_char(int c, t_flags *active, int count);
 int					conv_dec(va_list ap, t_flags *active, int count);
@@ -77,7 +75,6 @@ char				*ft_power(int base, int exp);
 char				*ft_float(long double number, t_flags *active);
 char				*addition(char *n1, char *n2, int op);
 char				*zero(size_t n);
-char				*ft_float_main(t_double *d, t_flags *active);
 char				*ft_float_calcul(t_double *d, int exp, int base);
 char				*multiplication(char *mantissa, char *exponent, int op);
 char				*add_zero(char *n1, char *n2);
@@ -86,4 +83,7 @@ int					conv_float(va_list ap, t_flags *active, int count);
 char				*zero(size_t n);
 char				*ft_roundup(char *buff_frac, char *buff_whole,
 						t_flags *active);
+char				*ft_float_frac(t_double *d, int exp, t_float *f);
+char				*ft_float_whole(t_double *d, int exp, t_float *f);
+int					find_nbr_zero(t_float *f, t_double *d, int exp);
 #endif

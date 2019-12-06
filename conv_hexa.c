@@ -6,13 +6,13 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 06:29:09 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/12/02 00:40:25 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/06 00:01:36 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*dec_to_hex(size_t n, char c)
+char			*dec_to_hex(size_t n, char c)
 {
 	char	*res;
 	size_t	r;
@@ -41,7 +41,7 @@ char	*dec_to_hex(size_t n, char c)
 	return (res);
 }
 
-char	*find_type_hexa(va_list ap, t_flags *active, char c)
+static	char	*find_type_hexa(va_list ap, t_flags *active, char c)
 {
 	char *buffer;
 
@@ -58,7 +58,7 @@ char	*find_type_hexa(va_list ap, t_flags *active, char c)
 	return (buffer);
 }
 
-void	tmp_hexa(t_flags *active, int len_buffer, int *precision)
+static	void	tmp_hexa(t_flags *active, int len_buffer, int *precision)
 {
 	(HASH) && (WIDTH -= 2);
 	(ZERO && (PRECISION >= 0 || MINUS)) && (active->flags -= 8);
@@ -70,7 +70,7 @@ void	tmp_hexa(t_flags *active, int len_buffer, int *precision)
 	(WIDTH > PRECISION && (*precision) <= 0) && (active->width -= len_buffer);
 }
 
-int		conv_hexa(va_list ap, t_flags *active, char c, int count)
+int				conv_hexa(va_list ap, t_flags *active, char c, int count)
 {
 	char	*buffer;
 	int		len_buff;

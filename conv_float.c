@@ -6,13 +6,13 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 00:54:28 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/12/04 16:47:25 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/06 01:26:01 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char		*find_type_float(va_list ap, t_flags *active)
+static	char		*find_type_float(va_list ap, t_flags *active)
 {
 	char	*buffer;
 
@@ -25,7 +25,7 @@ char		*find_type_float(va_list ap, t_flags *active)
 	return (buffer);
 }
 
-char		*conv_float_find_type(va_list ap, t_flags *active)
+static	char		*conv_float_find_type(va_list ap, t_flags *active)
 {
 	char	*buffer;
 	char	*tmp;
@@ -54,7 +54,7 @@ char		*conv_float_find_type(va_list ap, t_flags *active)
 	return (buffer);
 }
 
-t_flags			*tmp_conv_float(char *buffer, t_flags *active, int count,
+static	t_flags		*tmp_conv_float(char *buffer, t_flags *active, int count,
 	int len_buffer)
 {
 	if (ft_strequ(buffer, "-inf"))
@@ -77,7 +77,7 @@ t_flags			*tmp_conv_float(char *buffer, t_flags *active, int count,
 	return (active);
 }
 
-int			conv_float(va_list ap, t_flags *active, int count)
+int					conv_float(va_list ap, t_flags *active, int count)
 {
 	char		*buffer;
 	long int	len_buffer;
@@ -100,6 +100,7 @@ int			conv_float(va_list ap, t_flags *active, int count)
 	(ft_strequ(buffer, "inf")) && (WIDTH > 0 && ZERO) &&
 		(count += ft_write(' ', WIDTH));
 	count += write(1, buffer, ft_strlen(buffer));
+	//free(buffer);
 	(MINUS) && (count += ft_write(' ', WIDTH));
 	return (count);
 }

@@ -6,13 +6,13 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 05:24:55 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/12/02 01:15:12 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/06 00:03:12 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*find_type_dec(va_list ap, t_flags *active)
+static	char	*find_type_dec(va_list ap, t_flags *active)
 {
 	char	*buffer;
 
@@ -29,7 +29,7 @@ char	*find_type_dec(va_list ap, t_flags *active)
 	return (buffer);
 }
 
-char	*find_type_unsigned_dec(va_list ap, t_flags *active)
+static	char	*find_type_unsigned_dec(va_list ap, t_flags *active)
 {
 	char	*buffer;
 
@@ -46,7 +46,7 @@ char	*find_type_unsigned_dec(va_list ap, t_flags *active)
 	return (buffer);
 }
 
-int		tmp_dec(t_flags *active, int len_buffer, int minus)
+static	int		tmp_dec(t_flags *active, int len_buffer, int minus)
 {
 	int		precision;
 
@@ -61,11 +61,11 @@ int		tmp_dec(t_flags *active, int len_buffer, int minus)
 	return (precision);
 }
 
-int		conv_dec(va_list ap, t_flags *active, int count)
+int				conv_dec(va_list ap, t_flags *active, int count)
 {
 	char	*buffer;
 	char	*tmp;
-	int		len_buffer;
+	int		len;
 	int		precision;
 	int		minus;
 
@@ -76,22 +76,21 @@ int		conv_dec(va_list ap, t_flags *active, int count)
 	tmp = buffer;
 	(buffer[0] == '-') && (buffer = buffer + 1);
 	(buffer[0] == '0' && active->precision >= 0) ? (buffer[0] = '\0') : 1;
-	len_buffer = ft_strlen(buffer);
-	precision = tmp_dec(active, len_buffer, minus);
+	len = ft_strlen(buffer);
+	precision = tmp_dec(active, len, minus);
 	(WIDTH > 0 && !(ZERO) && !(MINUS)) && (count += ft_write(' ', WIDTH));
 	(minus) && (count += ft_write('-', 1));
 	(PLUS && !minus) && (count += ft_write('+', 1));
 	(SPACE && !(PLUS) && !minus) && (count += ft_write(' ', 1));
 	(WIDTH > 0 && ZERO) && (count += ft_write('0', WIDTH));
-	(PRECISION > len_buffer) && (count += ft_write('0',
-		PRECISION - len_buffer));
-	count += write(1, buffer, len_buffer);
+	(PRECISION > len) && (count += ft_write('0', PRECISION - len));
+	count += write(1, buffer, len);
 	(WIDTH > 0 && !(ZERO) && MINUS) && (count += ft_write(' ', WIDTH));
 	free(tmp);
 	return (count);
 }
 
-int		conv_unsigned_dec(va_list ap, t_flags *active, int count)
+int				conv_unsigned_dec(va_list ap, t_flags *active, int count)
 {
 	char	*buffer;
 	int		len_buffer;

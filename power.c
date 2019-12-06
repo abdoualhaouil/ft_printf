@@ -6,26 +6,13 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 19:50:51 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/12/05 22:59:51 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/06 00:32:15 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*zero(size_t n)
-{
-	char		*res;
-	size_t		i;
-
-	if (!(res = ft_strnew(n)))
-		return (NULL);
-	i = -1;
-	while (++i < n)
-		res[i] = '0';
-	return (res);
-}
-
-char	*delete_zero(char *res)
+char			*delete_zero(char *res)
 {
 	char	*tmp;
 	int		i;
@@ -42,21 +29,15 @@ char	*delete_zero(char *res)
 	return (res);
 }
 
-char	*multiplication(char *mantissa, char *exponent, int op)
+static	char	*tmp_multiplication(char *mantissa, char *exponent,
+	int k, char *res)
 {
-	char	*res;
 	int		j;
-	int		k;
 	int		totaldidgit;
 	int		remainder;
 	int		i;
 
-	k = (ft_strequ(mantissa, "1")) ? ft_strlen(mantissa) +
-		ft_strlen(exponent) - 1 : ft_strlen(mantissa) + ft_strlen(exponent);
-	if (!(res = zero(k)))
-		return (NULL);
 	j = ft_strlen(mantissa);
-	k--;
 	while (--j >= 0)
 	{
 		i = ft_strlen(exponent);
@@ -73,11 +54,40 @@ char	*multiplication(char *mantissa, char *exponent, int op)
 		}
 		k = j + ft_strlen(exponent) - 1;
 	}
+	return (res);
+}
+
+char			*multiplication(char *mantissa, char *exponent, int op)
+{
+	char	*res;
+	int		k;
+
+	k = (ft_strequ(mantissa, "1")) ? ft_strlen(mantissa) +
+		ft_strlen(exponent) - 1 : ft_strlen(mantissa) + ft_strlen(exponent);
+	if (!(res = zero(k)))
+		return (NULL);
+	k--;
+	res = tmp_multiplication(mantissa, exponent, k, res);
 	(op == 0) && (res = delete_zero(res));
 	return (res);
 }
 
-char	*ft_power(int base, int exp)
+static	char	*tmp_power(int exp, char *basec, char *base1)
+{
+	char	*tmp;
+
+	if (exp % 2 == 1)
+	{
+		tmp = base1;
+		if (!(base1 = multiplication(base1, basec, 0)))
+			return (NULL);
+		free(tmp);
+		exp--;
+	}
+	return (base1);
+}
+
+char			*ft_power(int base, int exp)
 {
 	char	*basec;
 	char	*base1;
@@ -88,14 +98,7 @@ char	*ft_power(int base, int exp)
 		return (NULL);
 	while (exp > 1)
 	{
-		if (exp % 2 == 1)
-		{
-			tmp = base1;
-			if (!(base1 = multiplication(base1, basec, 0)))
-				return (NULL);
-			free(tmp);
-			exp--;
-		}
+		base1 = tmp_power(exp, basec, base1);
 		exp /= 2;
 		tmp = basec;
 		if (!(basec = multiplication(basec, basec, 0)))

@@ -6,13 +6,13 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 11:49:46 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/12/04 16:07:38 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/06 00:13:41 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int		five_round(char *buffer, int precision)
+static	int		five_round(char *buffer, int precision)
 {
 	int	j;
 	int len;
@@ -32,7 +32,7 @@ int		five_round(char *buffer, int precision)
 	return (0);
 }
 
-int		ft_round_frac_tmp(char **buff_frac, long int precision, int len)
+static	int		ft_round_frac_tmp(char **buff_frac, long int precision, int len)
 {
 	char	*buff;
 	char	*tmp;
@@ -50,13 +50,11 @@ int		ft_round_frac_tmp(char **buff_frac, long int precision, int len)
 	return (0);
 }
 
-int		ft_round_frac(char **buff_frac, long int precision)
+static	int		ft_round_frac(char **buff_frac, long int precision, int len)
 {
 	char	*tmp;
 	char	*buff;
-	int		len;
 
-	len = ft_strlen((*buff_frac));
 	if (ft_round_frac_tmp(buff_frac, precision, len) == -1)
 		return (-1);
 	if ((*buff_frac)[precision] >= '5')
@@ -72,15 +70,17 @@ int		ft_round_frac(char **buff_frac, long int precision)
 		free(buff);
 		if (ft_strlen(tmp) < ft_strlen(*buff_frac))
 		{
-			(*buff_frac) = (*buff_frac) + 1;
+			tmp = (*buff_frac);
+			(*buff_frac) = ft_strdup((*buff_frac) + 1);
+			free(tmp);
 			return (1);
 		}
 	}
 	return (0);
 }
 
-char	*ft_round_whole(char *buff_whole, long int precision, int ret,
-	t_flags *active)
+static	char	*ft_round_whole(char *buff_whole, long int precision, int ret,
+					t_flags *active)
 {
 	char	*buff;
 	char	*tmp;
@@ -106,7 +106,7 @@ char	*ft_round_whole(char *buff_whole, long int precision, int ret,
 	return (buff_whole);
 }
 
-char	*ft_roundup(char *buff_frac, char *buff_whole, t_flags *active)
+char			*ft_roundup(char *buff_frac, char *buff_whole, t_flags *active)
 {
 	char		*buff;
 	long int	precision;
@@ -116,10 +116,11 @@ char	*ft_roundup(char *buff_frac, char *buff_whole, t_flags *active)
 	ret = 0;
 	if (!buff_whole)
 		return (NULL);
+	len = ft_strlen((buff_frac));
 	(PRECISION == -1) && (precision = 6);
 	(PRECISION != -1) && (precision = PRECISION);
 	if (precision - 1 >= 0)
-		if ((ret = ft_round_frac(&buff_frac, precision)) == -1)
+		if ((ret = ft_round_frac(&buff_frac, precision, len)) == -1)
 			return (NULL);
 	len = ft_strlen(buff_whole);
 	if (precision - 1 < 0 && buff_frac[0] >= '5' && (five_round(buff_frac,
@@ -128,7 +129,7 @@ char	*ft_roundup(char *buff_frac, char *buff_whole, t_flags *active)
 	buff_whole = ft_round_whole(buff_whole, precision, ret, active);
 	buff_frac[precision] = '\0';
 	buff = ft_strjoin(buff_whole, buff_frac);
-//free(buff_frac);
+	free(buff_frac);
 	free(buff_whole);
 	return (buff);
 }

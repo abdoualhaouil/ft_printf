@@ -6,13 +6,13 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 00:46:15 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/12/02 02:14:28 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/06 00:04:42 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int		find_function(t_flags *active, va_list ap, char conversion)
+static	int		find_function(t_flags *active, va_list ap, char conversion)
 {
 	int		count;
 
@@ -32,7 +32,7 @@ int		find_function(t_flags *active, va_list ap, char conversion)
 	return (count);
 }
 
-int		ft_printf(const char *format, ...)
+int				ft_printf(const char *format, ...)
 {
 	va_list		ap;
 	t_flags		*active;
