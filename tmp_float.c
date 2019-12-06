@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 00:29:49 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/12/06 00:43:32 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/06 22:50:55 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static	char		*tmp_whole(t_double *d, t_float *f)
 			return (NULL);
 		f->tmp = (f->res);
 		if (!(f->res = addition(f->buffer, f->res, 0)))
-			return (NULL);
+			return (ft_free2(f->res, f->buffer));
 		free(f->buffer);
 		free(f->tmp);
 	}
@@ -50,14 +50,14 @@ char				*ft_float_whole(t_double *d, int exp, t_float *f)
 	f->j = -1;
 	while (++(f->i) < 64)
 		if (!(f->res = tmp_whole(d, f)))
-			return (NULL);
+			return (ft_free2(d, f));
 	(exp > 63) && (f->buffer = ft_power(2, exp - 63));
 	(exp <= 63) && (f->buffer = ft_strdup("1"));
 	if (!(f->buffer))
 		return (NULL);
 	f->tmp = (f->res);
 	if (!(f->res = multiplication(f->buffer, (f->res), 0)))
-		return (NULL);
+		return (ft_free2(f->res, f->buffer));
 	free(f->buffer);
 	free(f->tmp);
 	return (f->res);
@@ -71,17 +71,18 @@ static	char		*tmp_frac(t_float *f, t_double *d, int exp)
 	{
 		f->tmp = f->res;
 		if (!(f->res = ft_strjoin(f->res, "0")))
-			return (NULL);
+			return (ft_free(f->res));
 		free(f->tmp);
 		if ((d->float_rep.mantissa >> f->i) & 1)
 		{
 			if (!(f->buffer = ft_power(5, f->j)))
 				return (NULL);
 			if (f->j != (int)ft_strlen(f->buffer))
-				f->buffer = addition(f->buffer, zero(f->j), 1);
+				if (!(f->buffer = addition(f->buffer, zero(f->j), 1)))
+					return (NULL);
 			f->tmp = f->res;
 			if (!(f->res = addition(f->buffer, f->res, 1)))
-				return (NULL);
+				return (ft_free2(f->res, f->buffer));
 			free(f->buffer);
 			free(f->tmp);
 		}
@@ -103,7 +104,7 @@ char				*ft_float_frac(t_double *d, int exp, t_float *f)
 	if (!(tmp_frac(f, d, exp)))
 		return (NULL);
 	if (!(res = multiplication(f->buffer2, f->res, 1)))
-		return (NULL);
+		return (ft_free2(f->buffer2, f->res));
 	free(f->buffer2);
 	free(f->res);
 	f->i = ft_strlen(f->res) - 1;

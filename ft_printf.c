@@ -6,11 +6,24 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 00:46:15 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/12/06 00:04:42 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/06 23:17:38 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+void			*ft_free2(void *str, void *str1)
+{
+	free(str);
+	free(str1);
+	return (NULL);
+}
+
+void			*ft_free(void *ptr)
+{
+	free(ptr);
+	return (NULL);
+}
 
 static	int		find_function(t_flags *active, va_list ap, char conversion)
 {

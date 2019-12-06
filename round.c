@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 11:49:46 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/12/06 00:13:41 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/06 23:12:20 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,14 +93,15 @@ static	char	*ft_round_whole(char *buff_whole, long int precision, int ret,
 		(precision == 0) && (buff[precision] = '1');
 		tmp = buff_whole;
 		if (!(buff_whole = addition(buff, buff_whole, 0)))
-			return (NULL);
+			return (ft_free2(buff_whole, buff));
 		free(tmp);
 		free(buff);
 	}
 	if (precision != 0 || (precision == 0 && HASH))
 	{
 		tmp = buff_whole;
-		buff_whole = ft_strjoin(buff_whole, ".");
+		if (!(buff_whole = ft_strjoin(buff_whole, ".")))
+			return (ft_free(buff_whole));
 		free(tmp);
 	}
 	return (buff_whole);
@@ -126,7 +127,8 @@ char			*ft_roundup(char *buff_frac, char *buff_whole, t_flags *active)
 	if (precision - 1 < 0 && buff_frac[0] >= '5' && (five_round(buff_frac,
 		precision + 1) || (buff_whole[len - 1] - '0') % 2 != 0))
 		ret = 1;
-	buff_whole = ft_round_whole(buff_whole, precision, ret, active);
+	if (!(buff_whole = ft_round_whole(buff_whole, precision, ret, active)))
+		return (NULL);
 	buff_frac[precision] = '\0';
 	buff = ft_strjoin(buff_whole, buff_frac);
 	free(buff_frac);

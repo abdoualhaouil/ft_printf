@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 06:29:09 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/12/06 00:01:36 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/06 23:16:49 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,7 @@ int				conv_hexa(va_list ap, t_flags *active, char c, int count)
 	len_buff = ft_strlen(buffer);
 	tmp_hexa(active, len_buff, &precision);
 	(WIDTH > 0 && !(ZERO) && !(MINUS)) && (count += ft_write(' ', WIDTH));
-	(HASH && c == '0') && (count += write(1, "0x", 2));
-	(HASH && c == 'x') && (count += write(1, "0x", 2));
+	((HASH && c == '0') || (HASH && c == 'x')) && (count += write(1, "0x", 2));
 	(HASH && c == 'X') && (count += write(1, "0X", 2));
 	(WIDTH > 0 && ZERO) && (count += ft_write('0', WIDTH));
 	(PRECISION > len_buff) && (count += ft_write('0', PRECISION - len_buff));

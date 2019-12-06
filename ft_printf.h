@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 00:44:39 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/12/06 00:34:55 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/06 22:14:41 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,6 @@ char				*ft_roundup(char *buff_frac, char *buff_whole,
 char				*ft_float_frac(t_double *d, int exp, t_float *f);
 char				*ft_float_whole(t_double *d, int exp, t_float *f);
 int					find_nbr_zero(t_float *f, t_double *d, int exp);
+void				*ft_free(void *ptr);
+void				*ft_free2(void	*str, void *str1);
 #endif

@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 00:54:28 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/12/06 01:26:01 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/06 23:32:13 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int					conv_float(va_list ap, t_flags *active, int count)
 	(ft_strequ(buffer, "inf")) && (WIDTH > 0 && ZERO) &&
 		(count += ft_write(' ', WIDTH));
 	count += write(1, buffer, ft_strlen(buffer));
-	//free(buffer);
+	(minus == 0) ? free(buffer) : free(buffer - 1);
 	(MINUS) && (count += ft_write(' ', WIDTH));
 	return (count);
 }
