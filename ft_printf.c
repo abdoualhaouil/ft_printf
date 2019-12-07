@@ -6,7 +6,7 @@
 /*   By: aalhaoui <aalhaoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 00:46:15 by aalhaoui          #+#    #+#             */
-/*   Updated: 2019/12/06 23:17:38 by aalhaoui         ###   ########.fr       */
+/*   Updated: 2019/12/07 20:44:34 by aalhaoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@ void			*ft_free2(void *str, void *str1)
 	free(str);
 	free(str1);
 	return (NULL);
+}
+
+int				ft_free3(void *str, void *str1)
+{
+	free(str);
+	free(str1);
+	return (-1);
 }
 
 void			*ft_free(void *ptr)
@@ -69,7 +76,7 @@ int				ft_printf(const char *format, ...)
 			free(active);
 		}
 		else
-			counter += write(1, &format[i], 1);
+			(format[i]) && (counter += write(1, &format[i], 1));
 	va_end(ap);
 	return (counter);
 }

@@ -1,7 +1,5 @@
 NAME= libftprintf.a
 
-##NAMEL= libftprintf.a
-
 SRC= active_flags.c\
 	 conv_cs.c\
 	 conv_dec.c\
